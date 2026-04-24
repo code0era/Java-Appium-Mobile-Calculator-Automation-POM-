@@ -114,15 +114,15 @@ public class CalculatorPage extends BasePage {
     // RESULT DISPLAY
     // ══════════════════════════════════════════════════════════
 
-    @AndroidFindBy(resourceId = "com.google.android.calculator:id/result_preview")
+    @AndroidFindBy(id = "com.google.android.calculator:id/result_preview")
     @iOSXCUITFindBy(accessibility = "Result")
     private WebElement resultPreview;
 
-    @AndroidFindBy(resourceId = "com.google.android.calculator:id/result_final")
+    @AndroidFindBy(id = "com.google.android.calculator:id/result_final")
     @iOSXCUITFindBy(accessibility = "Result")
     private WebElement resultFinal;
 
-    @AndroidFindBy(resourceId = "com.google.android.calculator:id/formula")
+    @AndroidFindBy(id = "com.google.android.calculator:id/formula")
     @iOSXCUITFindBy(accessibility = "Formula")
     private WebElement formulaDisplay;
 
