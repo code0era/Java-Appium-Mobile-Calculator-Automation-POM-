@@ -130,8 +130,8 @@ mvn test
 # Specific test class
 mvn test -Dtest=CalculatorArithmeticTests
 
-# Skip unit tests
-mvn test -DsuiteXmlFile=src/test/resources/testng.xml
+# Run specific TestNG suite via Maven
+mvn clean test "-DsuiteXmlFile=src/test/resources/testng.xml"
 ```
 
 ---

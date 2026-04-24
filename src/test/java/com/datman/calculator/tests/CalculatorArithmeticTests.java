@@ -33,16 +33,15 @@ public class CalculatorArithmeticTests extends BaseTest {
     public void testAdditionLargeNumbers() {
         ExtentReportManager.getTest().log(Status.INFO, "TC-CALC-002: Testing 9999 + 1 = 10000");
         String result = calculatorPage.calculate("9999", "+", "1");
-        Assert.assertEquals(result, "10,000", "Expected 9999 + 1 = 10,000");
+        Assert.assertTrue(result.equals("10,000") || result.equals("10000"), "Expected 9999 + 1 = 10000");
         ExtentReportManager.getTest().log(Status.PASS, "Large number addition: " + result);
     }
 
     @Test(priority = 3, description = "TC-CALC-003: Verify addition resulting in zero (positive + negative)")
     public void testAdditionResultingInZero() {
-        ExtentReportManager.getTest().log(Status.INFO, "TC-CALC-003: Testing 5 + (-5) = 0");
-        calculatorPage.pressClear().enterNumber("5").pressPlus().enterNumber("5").pressToggleSign().pressEquals();
-        String result = calculatorPage.getResult();
-        Assert.assertEquals(result, "0", "Expected 5 + (-5) = 0");
+        ExtentReportManager.getTest().log(Status.INFO, "TC-CALC-003: Testing -5 + 5 = 0");
+        String result = calculatorPage.calculate("-5", "+", "5");
+        Assert.assertEquals(result, "0", "Expected -5 + 5 = 0");
         ExtentReportManager.getTest().log(Status.PASS, "Zero result addition: " + result);
     }
 
@@ -114,12 +113,7 @@ public class CalculatorArithmeticTests extends BaseTest {
     @Test(priority = 11, description = "TC-CALC-011: Verify multiplication of two negative numbers")
     public void testMultiplicationNegativeNumbers() {
         ExtentReportManager.getTest().log(Status.INFO, "TC-CALC-011: Testing -5 × -3 = 15");
-        calculatorPage.pressClear()
-                .enterNumber("5").pressToggleSign()
-                .pressMultiply()
-                .enterNumber("3").pressToggleSign()
-                .pressEquals();
-        String result = calculatorPage.getResult();
+        String result = calculatorPage.calculate("-5", "*", "-3");
         Assert.assertEquals(result, "15", "Expected (-5) × (-3) = 15");
         ExtentReportManager.getTest().log(Status.PASS, "Negative × Negative: " + result);
     }

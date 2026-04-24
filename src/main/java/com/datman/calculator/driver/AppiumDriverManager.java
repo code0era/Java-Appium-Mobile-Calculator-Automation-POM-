@@ -81,7 +81,7 @@ public class AppiumDriverManager {
                 .setPlatformVersion(config.getPlatformVersion())
                 .setAppPackage(config.getAppPackage())
                 .setAppActivity(config.getAppActivity())
-                .setNoReset(false)
+                .setNoReset(true)   // Calculator is pre-installed — never reset/reinstall
                 .setFullReset(false)
                 .setNewCommandTimeout(Duration.ofSeconds(300));
 

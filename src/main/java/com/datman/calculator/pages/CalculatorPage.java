@@ -7,11 +7,18 @@ import org.openqa.selenium.WebElement;
 /**
  * CalculatorPage — Page Object Model for the Calculator application.
  *
- * <p>Encapsulates all UI interactions with the calculator.
- * Uses dual locators for both Android and iOS support via @AndroidFindBy and @iOSXCUITFindBy.</p>
+ * <p>
+ * Encapsulates all UI interactions with the calculator.
+ * Uses dual locators for both Android and iOS support via @AndroidFindBy
+ * and @iOSXCUITFindBy.
+ * </p>
  *
- * <p>Android target: com.google.android.calculator (AOSP Calculator)</p>
- * <p>iOS target: com.apple.mobilecalculator</p>
+ * <p>
+ * Android target: com.google.android.calculator (AOSP Calculator)
+ * </p>
+ * <p>
+ * iOS target: com.apple.mobilecalculator
+ * </p>
  *
  * @author DatMan QA Team
  * @version 1.0
@@ -74,7 +81,7 @@ public class CalculatorPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "Subtract")
     private WebElement btnMinus;
 
-    @AndroidFindBy(accessibility = "times")
+    @AndroidFindBy(accessibility = "multiply")
     @iOSXCUITFindBy(accessibility = "Multiply")
     private WebElement btnMultiply;
 
@@ -98,7 +105,7 @@ public class CalculatorPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "Delete")
     private WebElement btnBackspace;
 
-    @AndroidFindBy(accessibility = "decimal point")
+    @AndroidFindBy(accessibility = "point")
     @iOSXCUITFindBy(accessibility = "Decimal Separator")
     private WebElement btnDecimal;
 
@@ -106,7 +113,7 @@ public class CalculatorPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "Plus/Minus")
     private WebElement btnToggleSign;
 
-    @AndroidFindBy(accessibility = "modulo")
+    @AndroidFindBy(accessibility = "percent")
     @iOSXCUITFindBy(accessibility = "Percent")
     private WebElement btnPercent;
 
@@ -137,7 +144,8 @@ public class CalculatorPage extends BasePage {
      * @return this — for method chaining
      */
     public CalculatorPage pressDigit(int digit) {
-        if (digit < 0 || digit > 9) throw new IllegalArgumentException("Digit must be 0-9, got: " + digit);
+        if (digit < 0 || digit > 9)
+            throw new IllegalArgumentException("Digit must be 0-9, got: " + digit);
         WebElement btn = getDigitButton(digit);
         click(btn, "digit " + digit);
         return this;
@@ -149,23 +157,66 @@ public class CalculatorPage extends BasePage {
     public CalculatorPage enterNumber(String number) {
         logger.info("Entering number: {}", number);
         for (char ch : number.toCharArray()) {
-            if (ch == '.') { click(btnDecimal, "decimal point"); }
-            else if (ch == '-') { click(btnToggleSign, "toggle sign"); }
-            else { pressDigit(Character.getNumericValue(ch)); }
+            if (ch == '.') {
+                click(btnDecimal, "decimal point");
+            } else if (ch == '-') {
+                click(btnMinus, "Minus (-)");
+            } else {
+                pressDigit(Character.getNumericValue(ch));
+            }
         }
         return this;
     }
 
-    public CalculatorPage pressPlus() { click(btnPlus, "Plus (+)"); return this; }
-    public CalculatorPage pressMinus() { click(btnMinus, "Minus (-)"); return this; }
-    public CalculatorPage pressMultiply() { click(btnMultiply, "Multiply (×)"); return this; }
-    public CalculatorPage pressDivide() { click(btnDivide, "Divide (÷)"); return this; }
-    public CalculatorPage pressEquals() { click(btnEquals, "Equals (=)"); return this; }
-    public CalculatorPage pressClear() { click(btnClear, "Clear (AC)"); return this; }
-    public CalculatorPage pressBackspace() { click(btnBackspace, "Backspace (⌫)"); return this; }
-    public CalculatorPage pressDecimal() { click(btnDecimal, "Decimal (.)"); return this; }
-    public CalculatorPage pressPercent() { click(btnPercent, "Percent (%)"); return this; }
-    public CalculatorPage pressToggleSign() { click(btnToggleSign, "Toggle Sign (+/-)"); return this; }
+    public CalculatorPage pressPlus() {
+        click(btnPlus, "Plus (+)");
+        return this;
+    }
+
+    public CalculatorPage pressMinus() {
+        click(btnMinus, "Minus (-)");
+        return this;
+    }
+
+    public CalculatorPage pressMultiply() {
+        click(btnMultiply, "Multiply (×)");
+        return this;
+    }
+
+    public CalculatorPage pressDivide() {
+        click(btnDivide, "Divide (÷)");
+        return this;
+    }
+
+    public CalculatorPage pressEquals() {
+        click(btnEquals, "Equals (=)");
+        return this;
+    }
+
+    public CalculatorPage pressClear() {
+        click(btnClear, "Clear (AC)");
+        return this;
+    }
+
+    public CalculatorPage pressBackspace() {
+        click(btnBackspace, "Backspace (⌫)");
+        return this;
+    }
+
+    public CalculatorPage pressDecimal() {
+        click(btnDecimal, "Decimal (.)");
+        return this;
+    }
+
+    public CalculatorPage pressPercent() {
+        click(btnPercent, "Percent (%)");
+        return this;
+    }
+
+    public CalculatorPage pressToggleSign() {
+        click(btnToggleSign, "Toggle Sign (+/-)");
+        return this;
+    }
 
     // ══════════════════════════════════════════════════════════
     // RESULT RETRIEVAL
@@ -177,10 +228,10 @@ public class CalculatorPage extends BasePage {
      */
     public String getResult() {
         try {
-            return getText(resultFinal, "Result Final");
+            return getText(resultFinal, "Result Final").replace("−", "-");
         } catch (Exception e) {
             logger.warn("resultFinal not visible, trying resultPreview");
-            return getText(resultPreview, "Result Preview");
+            return getText(resultPreview, "Result Preview").replace("−", "-");
         }
     }
 
@@ -188,16 +239,16 @@ public class CalculatorPage extends BasePage {
      * Get the formula/expression currently displayed.
      */
     public String getFormula() {
-        return getText(formulaDisplay, "Formula Display");
+        return getText(formulaDisplay, "Formula Display").replace("−", "-");
     }
 
     /**
      * High-level: perform a complete binary operation.
      * Example: calculate("5", "+", "3") → presses 5, +, 3, =
      *
-     * @param a first operand
+     * @param a  first operand
      * @param op one of "+", "-", "*", "/"
-     * @param b second operand
+     * @param b  second operand
      * @return the result string
      */
     public String calculate(String a, String op, String b) {
@@ -205,11 +256,11 @@ public class CalculatorPage extends BasePage {
         pressClear();
         enterNumber(a);
         switch (op) {
-            case "+" -> pressPlus();
-            case "-" -> pressMinus();
-            case "*" -> pressMultiply();
-            case "/" -> pressDivide();
-            default -> throw new IllegalArgumentException("Unknown operator: " + op + ". Use +, -, *, /");
+            case "+": pressPlus(); break;
+            case "-": pressMinus(); break;
+            case "*": pressMultiply(); break;
+            case "/": pressDivide(); break;
+            default: throw new IllegalArgumentException("Unknown operator: " + op + ". Use +, -, *, /");
         }
         enterNumber(b);
         pressEquals();
@@ -231,18 +282,18 @@ public class CalculatorPage extends BasePage {
     // ══════════════════════════════════════════════════════════
 
     private WebElement getDigitButton(int digit) {
-        return switch (digit) {
-            case 0 -> btn0;
-            case 1 -> btn1;
-            case 2 -> btn2;
-            case 3 -> btn3;
-            case 4 -> btn4;
-            case 5 -> btn5;
-            case 6 -> btn6;
-            case 7 -> btn7;
-            case 8 -> btn8;
-            case 9 -> btn9;
-            default -> throw new IllegalArgumentException("Invalid digit: " + digit);
-        };
+        switch (digit) {
+            case 0: return btn0;
+            case 1: return btn1;
+            case 2: return btn2;
+            case 3: return btn3;
+            case 4: return btn4;
+            case 5: return btn5;
+            case 6: return btn6;
+            case 7: return btn7;
+            case 8: return btn8;
+            case 9: return btn9;
+            default: throw new IllegalArgumentException("Invalid digit: " + digit);
+        }
     }
 }

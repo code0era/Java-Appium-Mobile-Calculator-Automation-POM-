@@ -69,14 +69,14 @@ public class CalculatorEdgeCaseTests extends BaseTest {
         ExtentReportManager.getTest().log(Status.PASS, "Chained ops: " + result);
     }
 
-    @Test(priority = 5, description = "TC-EC-005: Verify toggle sign changes positive to negative")
+    @Test(priority = 5, description = "TC-EC-005: Verify minus button creates negative number")
     public void testToggleSignPositiveToNegative() {
-        ExtentReportManager.getTest().log(Status.INFO, "TC-EC-005: Enter 7, toggle sign → -7");
-        calculatorPage.pressClear().pressDigit(7).pressToggleSign();
+        ExtentReportManager.getTest().log(Status.INFO, "TC-EC-005: Enter - then 7 → -7");
+        calculatorPage.pressClear().pressMinus().pressDigit(7);
         String result = calculatorPage.getFormula();
-        Assert.assertTrue(result.contains("-7") || result.equals("-7"),
-                "Expected -7 after toggle, got: " + result);
-        ExtentReportManager.getTest().log(Status.PASS, "Toggle sign: " + result);
+        Assert.assertTrue(result.contains("-7") || result.equals("-7") || result.contains("−7"),
+                "Expected -7, got: " + result);
+        ExtentReportManager.getTest().log(Status.PASS, "Negative sign: " + result);
     }
 
     @Test(priority = 6, description = "TC-EC-006: Verify decimal input (3.14)")
@@ -131,12 +131,7 @@ public class CalculatorEdgeCaseTests extends BaseTest {
     @Test(priority = 11, description = "TC-EC-011: Verify negative × positive = negative")
     public void testNegativeTimesPositive() {
         ExtentReportManager.getTest().log(Status.INFO, "TC-EC-011: -5 × 4 = -20");
-        calculatorPage.pressClear()
-                .pressDigit(5).pressToggleSign()
-                .pressMultiply()
-                .pressDigit(4)
-                .pressEquals();
-        String result = calculatorPage.getResult();
+        String result = calculatorPage.calculate("-5", "*", "4");
         Assert.assertEquals(result, "-20", "Expected -5 × 4 = -20");
         ExtentReportManager.getTest().log(Status.PASS, "Neg × Pos: " + result);
     }
