@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="DatMan Calculator Automation Suite" verbose="1" parallel="false">
+    <parameter name="platform" value="android"/>
+
+    <listeners>
+        <!-- Add custom listener if needed -->
+    </listeners>
+
+    <test name="Calculator Arithmetic Tests" preserve-order="true">
+        <classes>
+            <class name="com.datman.calculator.tests.CalculatorArithmeticTests"/>
+        </classes>
+    </test>
+
+    <test name="Calculator Edge Case Tests" preserve-order="true">
+        <classes>
+            <class name="com.datman.calculator.tests.CalculatorEdgeCaseTests"/>
+        </classes>
+    </test>
+
+</suite>
